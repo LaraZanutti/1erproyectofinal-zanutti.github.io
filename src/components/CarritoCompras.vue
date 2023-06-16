@@ -29,13 +29,20 @@
 export default {
   props: {
     productos: Array,
+    usuarioLogeado: String,
   },
   methods: {
     eliminarTodo() {
       this.$emit("eliminarTodo");
     },
     finalizarCompra() {
-      this.$swal("Próximamente");
+      if (this.usuarioLogeado.length > 0) {
+        this.$swal("Próximamente");
+      } else {
+        this.$swal("Debe estar logeado para finalizar la compra", "", "error");
+        this.$emit("esconderSidebar");
+        this.$emit("activarLogin");
+      }
     },
   },
   computed: {

@@ -1,22 +1,35 @@
 <template>
   <div>
-    <b-sidebar id="sidebar-right" title="Carrito de compras" shadow width="50%">
+    <b-sidebar
+      id="sidebar-right"
+      title="Carrito de compras"
+      shadow
+      width="50%"
+      ref="carritoSidebar"
+    >
       <div class="px-3 py-2">
-        <CarritoCompras :productos="productos" @eliminarTodo="eliminarTodo" />
+        <CarritoCompras
+          @eliminarTodo="eliminarTodo"
+          @activarLogin="activarLogin"
+          @esconderSidebar="esconderSidebar"
+          :productos="productos"
+          :usuarioLogeado="usuarioLogeado"
+        />
       </div>
     </b-sidebar>
     <b-navbar toggleable="lg" type="dark" variant="dark">
-      <b-navbar-brand href="./components/App.vue" class="lariz"
-        >LariZtore</b-navbar-brand
-      >
+      <b-navbar-brand href="#" class="lariz">LariZtore</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" class="justify-content-end p-3 ml-4" is-nav>
         <b-navbar-nav>
-          <b-nav-item v-b-toggle.sidebar-right v-if="usuarioLogeado.length > 0"
-            ><b-icon-cart4 class="carrito"
-          /></b-nav-item>
+          <b-nav-item v-b-toggle.sidebar-right>
+            <b-button class="carrito">
+              <b-icon-cart4 />
+              <span class="cantidadProductos">{{ productos.length }}</span>
+            </b-button>
+          </b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav>
@@ -53,6 +66,9 @@ export default {
   },
   methods: {
     //Emitir activarLogin al app.vue
+    esconderSidebar() {
+      this.$refs.carritoSidebar.hide();
+    },
     activarLogin() {
       this.$emit("activarLogin");
     },
@@ -108,11 +124,34 @@ export default {
 
 .carrito {
   color: rgb(244, 147, 215);
+  background: rgba(0, 0, 0, 0);
+  border: 1px solid rgb(244, 147, 215);
+  margin-left: 10px;
+  display: flex;
+  min-width: 70px;
+  gap: 10px;
+}
+
+.carrito:hover {
+  background: rgb(244, 147, 215);
+  color: white;
 }
 
 .botonComprar {
   font-size: 20px;
   font-weight: 500;
   display: inline-block;
+}
+
+.cantidadProductos {
+  min-width: 20px;
+  min-height: 20px;
+  background: rgb(244, 147, 215);
+  color: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
 }
 </style>
